@@ -1,23 +1,28 @@
 {% extends 'base.html' %}
-
 {% block title %}Dashboard - Resume{% endblock %}
 {% block body_class %}dashboard-body{% endblock %}
 
-{% block layout %}
+{% block content %}
 <div class="dashboard-container">
 
+  <!-- Contact Section -->
   <div class="mb-3 p-3 border rounded shadow-sm">
-    <h5 data-bs-toggle="collapse" data-bs-target="#contactSection" aria-expanded="false">Contact</h5>
+    <h5 class="text-primary" data-bs-toggle="collapse" data-bs-target="#contactSection" aria-expanded="false" aria-controls="contactSection">
+      Contact
+    </h5>
     <div class="collapse" id="contactSection">
       <p><b>Email:</b> <a href="mailto:shreyashphoto@gmail.com">shreyashphoto@gmail.com</a></p>
       <p><b>LinkedIn:</b> <a href="https://www.linkedin.com/in/shreyas-pandey-4b9984266" target="_blank">Shreyas Pandey</a></p>
     </div>
   </div>
 
+  <!-- Skills Section -->
   <div class="mb-3 p-3 border rounded shadow-sm">
-    <h5 data-bs-toggle="collapse" data-bs-target="#skillsSection" aria-expanded="false">Top Skills</h5>
+    <h5 class="text-success" data-bs-toggle="collapse" data-bs-target="#skillsSection" aria-expanded="false" aria-controls="skillsSection">
+      Top Skills
+    </h5>
     <div class="collapse" id="skillsSection">
-      <div class="d-flex flex-wrap gap-2">
+      <div class="d-flex flex-wrap gap-2 mt-2">
         <span class="badge bg-primary">Sleeping</span>
         <span class="badge bg-secondary">Backend Ops</span>
         <span class="badge bg-warning text-dark">VFX</span>
@@ -27,10 +32,13 @@
     </div>
   </div>
 
+  <!-- Experience Section -->
   <div class="mb-3 p-3 border rounded shadow-sm">
-    <h5 data-bs-toggle="collapse" data-bs-target="#experienceSection" aria-expanded="false">Experience</h5>
+    <h5 class="text-danger" data-bs-toggle="collapse" data-bs-target="#experienceSection" aria-expanded="false" aria-controls="experienceSection">
+      Experience
+    </h5>
     <div class="collapse" id="experienceSection">
-      <ul class="list-unstyled">
+      <ul class="list-unstyled mt-2">
         <li><b>SRMCEM Lucknow</b> — Student <span class="text-muted">(2023 - Present)</span></li>
         <li><b>Freelance</b> — Self Employed <span class="text-muted">(2022 - Present)</span></li>
         <li><b>VN Productions</b> — Video Editor <span class="text-muted">(2024)</span></li>
@@ -38,16 +46,22 @@
     </div>
   </div>
 
+  <!-- Education Section -->
   <div class="mb-3 p-3 border rounded shadow-sm">
-    <h5 data-bs-toggle="collapse" data-bs-target="#educationSection" aria-expanded="false">Education</h5>
+    <h5 class="text-info" data-bs-toggle="collapse" data-bs-target="#educationSection" aria-expanded="false" aria-controls="educationSection">
+      Education
+    </h5>
     <div class="collapse" id="educationSection">
       <p>B.Tech, CSE - AKTU <span class="text-muted">(2023 - 2027)</span></p>
       <p>10+2, Computer Science - CBSE <span class="text-muted">(2021 - 2022)</span></p>
     </div>
   </div>
 
+  <!-- Projects Section -->
   <div class="mb-3 p-3 border rounded shadow-sm">
-    <h5 data-bs-toggle="collapse" data-bs-target="#projectsSection" aria-expanded="false">Projects</h5>
+    <h5 class="text-warning" data-bs-toggle="collapse" data-bs-target="#projectsSection" aria-expanded="false" aria-controls="projectsSection">
+      Projects
+    </h5>
     <div class="collapse" id="projectsSection">
       <p><a href="https://github.com/shreyaspandey2809/Stock-Analyzer" target="_blank">Stock_Analyzer</a></p>
       <p><a href="https://github.com/shreyaspandey2809/Retro_Shooter" target="_blank">Retro_Shooter</a></p>
