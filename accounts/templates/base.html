@@ -8,11 +8,16 @@
   <style>
     body {
       background: linear-gradient(135deg, #667eea, #764ba2);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+    }
+
+    /* Default auth layout */
+    .auth-body {
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       overflow: hidden;
     }
 
@@ -38,8 +43,23 @@
       opacity: 0;
     }
 
+    /* Dashboard layout */
+    .dashboard-body {
+      min-height: 100vh;
+      overflow-y: auto;
+      padding: 30px;
+    }
+
+    .dashboard-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      padding: 30px;
+    }
+
     .btn-custom {
-      width: 100%;
       border-radius: 10px;
       background: #667eea;
       color: #fff;
@@ -65,27 +85,31 @@
     }
   </style>
 </head>
-<body>
+<body class="{% block body_class %}auth-body{% endblock %}">
+  {% block layout %}
   <div class="card-box">
     {% block content %}{% endblock %}
   </div>
+  {% endblock %}
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const box = document.querySelector(".card-box");
-      setTimeout(() => box.classList.add("scale-up"), 100);
+      if (box) setTimeout(() => box.classList.add("scale-up"), 100);
     });
 
     document.querySelectorAll("a").forEach(link => {
       link.addEventListener("click", e => {
         if (link.getAttribute("href").startsWith("#") || link.target === "_blank") return;
-        e.preventDefault();
         const box = document.querySelector(".card-box");
-        box.classList.remove("scale-up");
-        box.classList.add("scale-down");
-        setTimeout(() => {
-          window.location = link.href;
-        }, 600);
+        if (box) {
+          e.preventDefault();
+          box.classList.remove("scale-up");
+          box.classList.add("scale-down");
+          setTimeout(() => {
+            window.location = link.href;
+          }, 600);
+        }
       });
     });
   </script>
