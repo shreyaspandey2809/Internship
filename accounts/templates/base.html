@@ -59,7 +59,16 @@
       box-shadow: 0 8px 30px rgba(0,0,0,0.2);
       padding: 30px;
     }
+    .dashboard-container .mb-3 {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer; 
+    }
 
+  .dashboard-container .mb-3:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+    z-index: 1;
+  }
     .btn-custom {
       border-radius: 10px;
       background: #667eea;
