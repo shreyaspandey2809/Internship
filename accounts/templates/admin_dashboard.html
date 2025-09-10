@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block body_class %}dashboard-body{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4 text-center text-white">Admin Dashboard</h2>
+
+  <div class="mb-4 text-center">
+    <a href="{% url 'accounts:add_event' %}" class="btn btn-custom btn-lg">+ Add Event</a>
+  </div>
+
+  <h3 class="text-white mb-3">All Events</h3>
+  <div class="row mb-5">
+    {% if events %}
+      {% for event in events %}
+        <div class="col-md-4 mb-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ event.title }}</h5>
+              <p class="card-text"><strong>Date:</strong> {{ event.date }}</p>
+              <p class="card-text"><strong>Description:</strong> {{ event.description|default:"No description" }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-white">No events created yet.</p>
+    {% endif %}
+  </div>
+
+  <h3 class="text-white mb-3">Participants</h3>
+  <div class="row">
+    {% if participants %}
+      {% for p in participants %}
+        <div class="col-md-4 mb-3">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <p><strong>Student:</strong> {{ p.student.username }}</p>
+              <p><strong>Event:</strong> {{ p.event.title }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-white">No participants yet.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

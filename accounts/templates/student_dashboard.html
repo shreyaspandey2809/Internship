@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard{% endblock %}
+{% block body_class %}dashboard-body{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4 text-center text-white">Student Dashboard</h2>
+  <div class="row">
+    {% for event in events %}
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ event.title }}</h5>
+            <p class="card-text"><strong>Date:</strong> {{ event.date }}</p>
+            <p class="card-text"><strong>Description:</strong> {{ event.description|default:"No description" }}</p>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-white">No events available at the moment.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .dashboard-body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+  }
+  .card {
+    border-radius: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+  }
+  .card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  }
+</style>
+{% endblock %}

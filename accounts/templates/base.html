@@ -13,11 +13,12 @@
     }
 
     .auth-body {
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
     }
+
     .card-box {
       background: #fff;
       border-radius: 20px;
@@ -28,33 +29,59 @@
       opacity: 0;
       transition: transform 0.6s cubic-bezier(0.25,1.25,0.5,1), opacity 0.6s ease;
     }
-    .card-box.scale-up { transform: scale(1); opacity: 1; }
-    .card-box.scale-up:hover { transform: scale(1.05); transition: transform 0.3s ease; }
-    .card-box.scale-down { transform: scale(1.15); opacity: 0; }
 
-    .dashboard-body { min-height: 100vh; padding: 30px; }
-    .dashboard-container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-      padding: 30px;
+    .card-box.scale-up {
+      transform: scale(1);
+      opacity: 1;
     }
-    .dashboard-container .mb-3 { transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
-    .dashboard-container .mb-3:hover { transform: scale(1.05) translateY(-5px); box-shadow:0 12px 25px rgba(0,0,0,0.25); z-index:1; }
 
-    .btn-custom { border-radius: 10px; background: #667eea; color: #fff; font-weight: bold; transition: background 0.3s ease; }
-    .btn-custom:hover { background: #764ba2; }
+    .card-box.scale-up:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease;
+    }
 
-    .extra-links { text-align: center; margin-top: 15px; }
-    .extra-links a { color: #667eea; text-decoration: none; font-size: 14px; transition: color 0.3s ease; }
-    .extra-links a:hover { color: #764ba2; }
+    .btn-custom {
+      border-radius: 10px;
+      background: #667eea;
+      color: #fff;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
 
-    .dashboard-container h5 { cursor: pointer; user-select: none; position: relative; padding-right: 20px; }
-    .dashboard-container h5::after { content: "+"; position: absolute; right: 0; font-weight: bold; transition: transform 0.3s ease; }
-    .dashboard-container h5[aria-expanded="true"]::after { transform: rotate(45deg); }
+    .btn-custom:hover {
+      background: #764ba2;
+    }
 
+    .extra-links {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .extra-links a {
+      color: #667eea;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .extra-links a:hover {
+      color: #764ba2;
+    }
+    .dashboard-body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .card {
+      border-radius: 15px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
   </style>
 </head>
 <body class="{% block body_class %}auth-body{% endblock %}">
@@ -64,7 +91,7 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const box = document.querySelector(".card-box");
-      if(box) setTimeout(()=>box.classList.add("scale-up"),100);
+      if(box) setTimeout(() => box.classList.add("scale-up"), 100);
     });
   </script>
   {% block extra_js %}{% endblock %}

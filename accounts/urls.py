@@ -1,11 +1,17 @@
 from django.urls import path
-from .views import login_view, register_view, dashboard, forgot_password
-from django.contrib.auth.views import LogoutView
+from . import views
+
+app_name = "accounts"
 
 urlpatterns = [
-    path('login/', login_view, name='login'),
-    path('register/', register_view, name='register'),
-    path('user/', dashboard, name='dashboard'),
-    path('forgot-password/', forgot_password, name='forgot_password'),
-    path('', login_view, name='home'),
+    path('', views.login_view, name='home'),
+    path('login/', views.login_view, name='login'),
+    path('register/', views.register_view, name='register'),
+    path('forgot-password/', views.forgot_password, name='forgot_password'),
+    path('logout/', views.logout_view, name='logout'),
+
+    path('student/dashboard/', views.student_dashboard, name='student_dashboard'),
+    path('student/register-event/<int:event_id>/', views.register_event, name='register_event'),
+    path('teacher/add-event/', views.add_event, name='add_event'),
+    path('teacher/dashboard/', views.admin_dashboard, name='admin_dashboard'),
 ]

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 60  
 
 ALLOWED_HOSTS = ["*"]
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
