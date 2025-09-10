@@ -128,3 +128,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # OR set timeout (in seconds, e.g., 60 sec = 1 min)
 SESSION_COOKIE_AGE = 60  
+
+ALLOWED_HOSTS = ["*"]
