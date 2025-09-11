@@ -49,7 +49,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware', 
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
 ]
 
 ROOT_URLCONF = 'shreyas.urls'
@@ -147,3 +148,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'shreyashphoto@gmail.com'
 EMAIL_HOST_PASSWORD = 'kcbl oxxp egpm extq'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
