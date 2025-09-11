@@ -1,4 +1,4 @@
-{%  load static  %}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +12,54 @@
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #667eea, #764ba2);
+      overflow-x: hidden;
+    }
+
+    /* Wrapper for transition */
+    #wrapper {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    #wrapper.loaded {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Transition Overlay */
+    #transition-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 200vmax;
+      height: 200vmax;
+      background: radial-gradient(circle, #667eea, #764ba2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    /* Particle container */
+    #particle-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9998;
+      overflow: visible;
+    }
+
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0.8;
     }
 
     .auth-body {
@@ -27,31 +75,46 @@
       box-shadow: 0 8px 30px rgba(0,0,0,0.2);
       padding: 40px;
       width: 400px;
-      transform: scale(0.8);
+      transform: scale(0.9) rotateX(10deg);
       opacity: 0;
-      transition: transform 0.6s cubic-bezier(0.25,1.25,0.5,1), opacity 0.6s ease;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .card-box {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      padding: 40px;
+      width: 400px;
+      transform: scale(1) rotateX(0deg); /* Set default scale for CSS hover */
+      opacity: 0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+      cursor: pointer;
     }
 
-    .card-box.scale-up {
-      transform: scale(1);
-      opacity: 1;
+.card-box:hover {
+  transform: scale(1.02) rotateX(0deg);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+}
+
+
+    .card-box:hover {
+      transform: scale(1.02) rotateX(0deg);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
     }
 
-    .card-box.scale-up:hover {
-      transform: scale(1.05);
-      transition: transform 0.3s ease;
-    }
-
+    /* Buttons with CSS hover */
     .btn-custom {
       border-radius: 10px;
       background: #667eea;
       color: #fff;
       font-weight: bold;
-      transition: background 0.3s ease;
+      display: inline-block;
+      transition: all 0.3s ease;
     }
 
     .btn-custom:hover {
       background: #764ba2;
+      transform: scale(1.05);
     }
 
     .extra-links {
@@ -69,21 +132,40 @@
     .extra-links a:hover {
       color: #764ba2;
     }
+
     .dashboard-body {
       min-height: 100vh;
       background: linear-gradient(135deg, #667eea, #764ba2);
+      overflow: hidden;
     }
+
+    .dashboard-body .card {
+      border-radius: 15px;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(0) rotate(0deg); /* initial transform for hover */
+      transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s;
+    }
+
+    .dashboard-body .card:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+
 
     .card {
       border-radius: 15px;
       transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
+      opacity: 0;
+      transform: translateY(40px) rotate(-3deg);
     }
 
     .card:hover {
       transform: translateY(-5px) scale(1.03);
       box-shadow: 0 12px 30px rgba(0,0,0,0.25);
     }
+
     .login-box {
       position: relative;
       background: white;
@@ -97,7 +179,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      transform: translate(10% , 10%);
+      transform: translate(10%, 10%);
       width: 80%;
       height: 80%;
       background: url("{% static 'images/srmcem_logo.png' %}") no-repeat center center;
@@ -110,19 +192,103 @@
       position: relative;
       z-index: 1;
     }
-
   </style>
 </head>
 <body class="{% block body_class %}auth-body{% endblock %}">
-  {% block content %}{% endblock %}
+
+  <!-- Page Transition Overlay -->
+  <div id="transition-overlay"></div>
+  <!-- Particle container -->
+  <div id="particle-container"></div>
+
+  <!-- Wrapper -->
+  <div id="wrapper">
+    {% block content %}{% endblock %}
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+      const overlay = document.getElementById("transition-overlay");
+      const particleContainer = document.getElementById("particle-container");
+      const wrapper = document.getElementById("wrapper");
+
+      // Fade in wrapper on load
+      setTimeout(() => wrapper.classList.add('loaded'), 50);
+
+      // Animate forms
       const box = document.querySelector(".card-box");
-      if(box) setTimeout(() => box.classList.add("scale-up"), 100);
+      // Only animate opacity on load
+      if (box) {
+        gsap.to(box, {
+          opacity: 1,
+          duration: 0.5,
+          ease: "power2.out"
+        });
+}
+
+
+      // Dashboard cards animation
+      const cards = document.querySelectorAll(".dashboard-body .card");
+      if (cards.length) {
+        gsap.to(cards, {
+          opacity: 1,       // animate only opacity
+          duration: 0.5,
+          ease: "back.out(1.7)",
+          stagger: 0.2
+        });
+      }
+
+      // Particle creation
+      function createParticles(x, y) {
+        for (let i = 0; i < 25; i++) {
+          const particle = document.createElement("div");
+          particle.classList.add("particle");
+          particle.style.left = x + "px";
+          particle.style.top = y + "px";
+          particleContainer.appendChild(particle);
+
+          const angle = Math.random() * 2 * Math.PI;
+          const radius = 50 + Math.random() * 50;
+
+          gsap.to(particle, {
+            x: radius * Math.cos(angle),
+            y: radius * Math.sin(angle),
+            opacity: 0,
+            scale: 0,
+            duration: 0.8 + Math.random() * 0.4,
+            ease: "power2.out",
+            onComplete: () => particle.remove()
+          });
+        }
+      }
+
+      // Page transition on link click
+      document.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", e => {
+          if (link.getAttribute("href").startsWith("#") || link.target === "_blank") return;
+          e.preventDefault();
+
+          const rect = link.getBoundingClientRect();
+          const x = rect.left + rect.width / 2;
+          const y = rect.top + rect.height / 2;
+
+          createParticles(x, y);
+
+          gsap.set(overlay, { top: y, left: x, scale: 0, transformOrigin: "center" });
+          gsap.to(overlay, {
+            scale: 1,
+            duration: 1.0,
+            ease: "power4.inOut",
+            onComplete: () => window.location = link.href
+          });
+        });
+      });
     });
   </script>
+
   {% block extra_js %}{% endblock %}
 </body>
 </html>
