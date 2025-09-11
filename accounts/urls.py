@@ -19,4 +19,5 @@ urlpatterns = [
     path("teacher/dashboard/", views.admin_dashboard, name="admin_dashboard"),
     path("teacher/add-event/", views.add_event, name="add_event"),
     path('teacher/edit-event/<int:event_id>/', views.edit_event, name='edit_event'),
+    path('teacher/delete-event/<int:event_id>/', views.delete_event, name='delete_event'),
 ]
