@@ -1,3 +1,5 @@
+{%  load static  %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,6 +84,33 @@
       transform: translateY(-5px) scale(1.03);
       box-shadow: 0 12px 30px rgba(0,0,0,0.25);
     }
+    .login-box {
+      position: relative;
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      overflow: hidden;
+    }
+
+    .login-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translate(10% , 10%);
+      width: 80%;
+      height: 80%;
+      background: url("{% static 'images/srmcem_logo.png' %}") no-repeat center center;
+      background-size: cover;
+      opacity: 0.15;
+      z-index: 0;
+    }
+
+    .login-box * {
+      position: relative;
+      z-index: 1;
+    }
+
   </style>
 </head>
 <body class="{% block body_class %}auth-body{% endblock %}">
