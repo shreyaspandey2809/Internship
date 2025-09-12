@@ -15,7 +15,6 @@
       overflow-x: hidden;
     }
 
-    /* Wrapper for transition */
     #wrapper {
       opacity: 0;
       transform: scale(0.95);
@@ -27,7 +26,6 @@
       transform: scale(1);
     }
 
-    /* Transition Overlay */
     #transition-overlay {
       position: fixed;
       top: 0;
@@ -41,7 +39,6 @@
       pointer-events: none;
     }
 
-    /* Particle container */
     #particle-container {
       position: fixed;
       top: 0;
@@ -85,7 +82,7 @@
       box-shadow: 0 8px 30px rgba(0,0,0,0.2);
       padding: 40px;
       width: 400px;
-      transform: scale(1) rotateX(0deg); /* Set default scale for CSS hover */
+      transform: scale(1) rotateX(0deg);
       opacity: 0;
       transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
       cursor: pointer;
@@ -102,7 +99,6 @@
       box-shadow: 0 12px 40px rgba(0,0,0,0.25);
     }
 
-    /* Buttons with CSS hover */
     .btn-custom {
       border-radius: 10px;
       background: #667eea;
@@ -143,7 +139,7 @@
       border-radius: 15px;
       cursor: pointer;
       opacity: 0;
-      transform: translateY(0) rotate(0deg); /* initial transform for hover */
+      transform: translateY(0) rotate(0deg); 
       transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s;
     }
 
@@ -196,12 +192,9 @@
 </head>
 <body class="{% block body_class %}auth-body{% endblock %}">
 
-  <!-- Page Transition Overlay -->
   <div id="transition-overlay"></div>
-  <!-- Particle container -->
   <div id="particle-container"></div>
 
-  <!-- Wrapper -->
   <div id="wrapper">
     {% block content %}{% endblock %}
   </div>
@@ -215,12 +208,9 @@
       const particleContainer = document.getElementById("particle-container");
       const wrapper = document.getElementById("wrapper");
 
-      // Fade in wrapper on load
       setTimeout(() => wrapper.classList.add('loaded'), 50);
 
-      // Animate forms
       const box = document.querySelector(".card-box");
-      // Only animate opacity on load
       if (box) {
         gsap.to(box, {
           opacity: 1,
@@ -229,19 +219,16 @@
         });
 }
 
-
-      // Dashboard cards animation
       const cards = document.querySelectorAll(".dashboard-body .card");
       if (cards.length) {
         gsap.to(cards, {
-          opacity: 1,       // animate only opacity
+          opacity: 1,
           duration: 0.5,
           ease: "back.out(1.7)",
           stagger: 0.2
         });
       }
 
-      // Particle creation
       function createParticles(x, y) {
         for (let i = 0; i < 25; i++) {
           const particle = document.createElement("div");
@@ -265,7 +252,6 @@
         }
       }
 
-      // Page transition on link click
       document.querySelectorAll("a").forEach(link => {
         link.addEventListener("click", e => {
           if (link.getAttribute("href").startsWith("#") || link.target === "_blank") return;
