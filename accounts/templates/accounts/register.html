@@ -30,7 +30,10 @@
         <option value="staff">Teacher</option>
       </select>
     </div>
-    <button type="submit" class="btn btn-custom w-100">Register</button>
+    <form method="POST" action="">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-custom w-100">Register</button>
+    </form>
   </form>
 
   <div class="extra-links mt-3 text-center">

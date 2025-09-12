@@ -10,9 +10,6 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-# -------------------
-# Login View
-# -------------------
 def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -21,9 +18,9 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            if user.is_staff:
+            if user.role == "staff" :
                 return redirect("accounts:admin_dashboard")
-            else:
+            elif user.role == "student":
                 return redirect("accounts:student_dashboard")
         else:
             messages.error(request, "Invalid username or password")
@@ -31,38 +28,38 @@ def login_view(request):
     return render(request, "accounts/login.html")
 
 
-# -------------------
-# Register View
-# -------------------
 def register_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("password")
-        role = request.POST.get("role")  # 'student' or 'teacher'
+        role = request.POST.get("role")
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists")
         elif User.objects.filter(email=email).exists():
             messages.error(request, "Email already exists")
         else:
-            # Check role and set is_staff accordingly
-            is_staff = True if role == "teacher" else False
             user = User.objects.create_user(
                 username=username,
                 email=email,
                 password=password,
-                is_staff=is_staff
+                role = role
             )
+
+            if role == "staff":
+                user.is_staff = True
+            elif role == "student":
+                user.is_staff = False
+
             user.save()
             messages.success(request, "Account created successfully! Please log in.")
             return redirect("accounts:login")
+
     return render(request, "accounts/register.html")
 
 
-# -------------------
-# Forgot Password
-# -------------------
+
 def forgot_password(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -80,17 +77,11 @@ def forgot_password(request):
     return render(request, "accounts/forgot_password.html")
 
 
-# -------------------
-# Logout
-# -------------------
 def logout_view(request):
     logout(request)
     return redirect("accounts:login")
 
 
-# -------------------
-# Student Dashboard
-# -------------------
 @login_required(login_url="accounts:login")
 def student_dashboard(request):
     events = Event.objects.all()
@@ -101,15 +92,11 @@ def student_dashboard(request):
     })
 
 
-# -------------------
-# Register Event
-# -------------------
 @login_required(login_url="accounts:login")
 def register_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     Registration.objects.get_or_create(event=event, student=request.user)
 
-    # Notify teacher
     if event.created_by.email:
         send_mail(
             subject=f"New Registration for {event.title}",
@@ -122,9 +109,6 @@ def register_event(request, event_id):
     return redirect("accounts:student_dashboard")
 
 
-# -------------------
-# Admin Dashboard
-# -------------------
 @login_required(login_url="accounts:login")
 def admin_dashboard(request):
     if not request.user.is_staff:
@@ -139,9 +123,6 @@ def admin_dashboard(request):
     })
 
 
-# -------------------
-# Add Event
-# -------------------
 @login_required(login_url="accounts:login")
 def add_event(request):
     if request.method == "POST":
@@ -151,7 +132,6 @@ def add_event(request):
             event.created_by = request.user
             event.save()
 
-            # Notify all students
             students = User.objects.filter(is_staff=False)
             recipient_list = [s.email for s in students if s.email]
             send_mail(
@@ -168,9 +148,6 @@ def add_event(request):
     return render(request, "accounts/add_event.html", {"form": form})
 
 
-# -------------------
-# Edit Event
-# -------------------
 @login_required(login_url='accounts:login')
 def edit_event(request, event_id):
     event = get_object_or_404(Event, id=event_id, created_by=request.user)

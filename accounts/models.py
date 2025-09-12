@@ -4,9 +4,9 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     ROLE_CHOICES = (
         ("student", "Student"),
-        ("admin", "Admin"),
+        ("staff", "Staff"),
     )
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="student")
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
 
 
 class Event(models.Model):
@@ -17,13 +17,12 @@ class Event(models.Model):
     category = models.CharField(max_length=50)
     poster = models.ImageField(upload_to="event_posters/", blank=True, null=True)
 
-    # allow null=True + blank=True so old rows won’t break
     created_by = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
         related_name="events",
-        null=True,     # ✅ fixes migration issue
-        blank=True     # ✅ allows empty in admin/forms if needed
+        null=True,
+        blank=True
     )
 
     def __str__(self):
